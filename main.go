@@ -29,7 +29,7 @@ func run(runenv *runtime.RunEnv) error {
 		return fmt.Errorf("aborting")
 	}
 
-	runenv.RecordMessage("network-ping-pong plan")
+	runenv.RecordMessage("network-ping-pong plan2")
 	runenv.RecordMessage("before sync.MustWatcherWriter")
 	watcher, writer := sync.MustWatcherWriter(ctx, runenv)
 	defer watcher.Close()
