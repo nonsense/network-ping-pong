@@ -29,7 +29,7 @@ func run(runenv *runtime.RunEnv) error {
 		return fmt.Errorf("aborting")
 	}
 
-	runenv.RecordMessage("network-ping-pong plan2")
+	runenv.RecordMessage("network-ping-pong plan4")
 	runenv.RecordMessage("before sync.MustWatcherWriter")
 	watcher, writer := sync.MustWatcherWriter(ctx, runenv)
 	defer watcher.Close()
@@ -241,7 +241,7 @@ func run(runenv *runtime.RunEnv) error {
 		return err
 	}
 
-	config.Default.Latency = 10 * time.Millisecond
+	config.Default.Latency = 1000 * time.Millisecond
 	config.State = "latency-reduced"
 
 	logging.S().Debug("writing new config with latency reduced")
@@ -257,7 +257,7 @@ func run(runenv *runtime.RunEnv) error {
 	}
 
 	logging.S().Debug("ping pong")
-	err = pingPong("10", 20*time.Millisecond, 30*time.Millisecond)
+	err = pingPong("1000", 1000*time.Millisecond, 3000*time.Millisecond)
 	if err != nil {
 		return err
 	}
