@@ -39,6 +39,7 @@ func run(runenv *runtime.RunEnv) error {
 		return nil
 	}
 
+	runenv.RecordMessage("network ping pong - Apr 10 - fadsdfadsfsfad")
 	runenv.RecordMessage("before sync.WaitNetworkInitialized")
 	if err := sync.WaitNetworkInitialized(ctx, runenv, watcher); err != nil {
 		return err
