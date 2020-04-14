@@ -257,6 +257,8 @@ func pingpong(runenv *runtime.RunEnv) error {
 		return err
 	}
 
+	time.Sleep(60 * time.Minute)
+
 	return nil
 }
 
