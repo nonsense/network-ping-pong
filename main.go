@@ -13,24 +13,19 @@ import (
 	"github.com/ipfs/testground/sdk/sync"
 )
 
-func main() {
-	runtime.Invoke(run)
+var testcases = map[string]runtime.TestCaseFn{
+	"ping-pong": pingpong,
 }
 
-func run(runenv *runtime.RunEnv) error {
+func main() {
+	runtime.InvokeMap(testcases)
+}
+
+func pingpong(runenv *runtime.RunEnv) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Second)
 	defer cancel()
 
-	if runenv.TestCaseSeq < 0 {
-		panic("test case sequence number not set")
-	}
-
-	if runenv.TestCaseSeq != 0 {
-		return fmt.Errorf("aborting")
-	}
-
-	runenv.RecordMessage("network-ping-pong plan4")
-	runenv.RecordMessage("before sync.MustWatcherWriter")
+	runenv.RecordMessage("before sync.MustWatcherWriter 1234")
 	watcher, writer := sync.MustWatcherWriter(ctx, runenv)
 	defer watcher.Close()
 	defer writer.Close()
@@ -39,7 +34,6 @@ func run(runenv *runtime.RunEnv) error {
 		return nil
 	}
 
-	runenv.RecordMessage("network ping pong - Apr 10 - fadsdfadsfsfad")
 	runenv.RecordMessage("before sync.WaitNetworkInitialized")
 	if err := sync.WaitNetworkInitialized(ctx, runenv, watcher); err != nil {
 		return err
@@ -242,7 +236,7 @@ func run(runenv *runtime.RunEnv) error {
 		return err
 	}
 
-	config.Default.Latency = 1000 * time.Millisecond
+	config.Default.Latency = 10 * time.Millisecond
 	config.State = "latency-reduced"
 
 	logging.S().Debug("writing new config with latency reduced")
@@ -258,7 +252,7 @@ func run(runenv *runtime.RunEnv) error {
 	}
 
 	logging.S().Debug("ping pong")
-	err = pingPong("1000", 1000*time.Millisecond, 3000*time.Millisecond)
+	err = pingPong("10", 20*time.Millisecond, 30*time.Millisecond)
 	if err != nil {
 		return err
 	}
